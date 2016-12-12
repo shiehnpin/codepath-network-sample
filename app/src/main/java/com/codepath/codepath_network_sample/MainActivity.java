@@ -25,6 +25,7 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static int IDX = 0;
     private TextView txIp;
     private ImageView ivSample;
     private Button btnGetImage;
@@ -49,8 +50,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private class GetJSONObjectAsyncTask extends AsyncTask<String,Void,JSONObject>{
 
+        private final int id = IDX++;
+
         @Override
         protected JSONObject doInBackground(String... params) {
+            Log.d("AsyncTask","JsonTask#"+id+" - doInBackground "+Thread.currentThread().getName());
             String url = params[0];
 
             return getJsonFromAPI(url);
@@ -58,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
+            Log.d("AsyncTask","JsonTask#"+id+" - onPostExecute "+Thread.currentThread().getName());
             try {
                 txIp.setText(jsonObject.getString("origin"));
             } catch (JSONException e) {
@@ -68,8 +73,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private class GetBitmapAsyncTask extends AsyncTask<String,Void,Bitmap>{
 
+        private final int id = IDX++;
+
         @Override
         protected Bitmap doInBackground(String... params) {
+            Log.d("AsyncTask","BmpTask#"+id+" - doInBackground "+Thread.currentThread().getName());
             String url = params[0];
 
             return getImageFromAPI(url);
@@ -77,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         protected void onPostExecute(Bitmap bitmap) {
+            Log.d("AsyncTask","BmpTask#"+id+" - onPostExecute "+Thread.currentThread().getName());
             ivSample.setImageBitmap(bitmap);
         }
     }
