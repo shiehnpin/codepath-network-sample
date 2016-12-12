@@ -2,6 +2,7 @@ package com.codepath.codepath_network_sample;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -50,13 +51,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+
     @Override
     public void onClick(View v) {
 
         if(v.getId() == R.id.btnGetImage) {
             getImageFromAPI();
         }else if(v.getId() == R.id.btnGetIp) {
-            getJsonFromAPI();
+            try {
+                txIp.setText(getJsonFromAPI("http://httpbin.org/delay/10").getString("origin"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -72,14 +78,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     */
 
-    private void getJsonFromAPI() {
+    private JSONObject getJsonFromAPI(String url) {
         //The links that we can fetch json data.
         URL targetUrl = null;
         HttpURLConnection conn = null;
         InputStream in = null;
+        JSONObject object = null;
         try {
 
-            targetUrl = new URL("http://httpbin.org/delay/10");
+            targetUrl = new URL(url);
 //            targetUrl = new URL("http://httpbin.org/get");
 
 
@@ -96,8 +103,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             while ((tmp = reader.readLine())!=null){
                 stringBuilder.append(tmp);
             }
-            JSONObject object = (JSONObject) new JSONTokener(stringBuilder.toString()).nextValue();
-            txIp.setText(object.getString("origin"));
+            object = (JSONObject) new JSONTokener(stringBuilder.toString()).nextValue();
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -117,6 +123,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
         }
+
+        return object;
 
     }
 
