@@ -78,7 +78,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         HttpURLConnection conn = null;
         InputStream in = null;
         try {
-            targetUrl = new URL("http://httpbin.org/get");
+
+            targetUrl = new URL("http://httpbin.org/delay/10");
+//            targetUrl = new URL("http://httpbin.org/get");
+
 
             //1. Step 1, open an connection linked to the specific url.
             conn = (HttpURLConnection) targetUrl.openConnection();
