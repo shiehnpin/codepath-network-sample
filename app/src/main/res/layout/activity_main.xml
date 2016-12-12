@@ -21,10 +21,26 @@
         android:layout_width="300dp"/>
 
     <Button
-        android:text="Get"
+        android:text="Get Image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/ivSample"
         android:layout_centerHorizontal="true"
-        android:id="@+id/btnAction"/>
+        android:id="@+id/btnGetImage"/>
+
+    <Button
+        android:text="Get IP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivSample"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/btnGetIp"/>
+
+    <TextView
+        android:text="0.0.0.0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txIP"
+        android:layout_below="@+id/btnGetIp"
+        android:layout_centerHorizontal="true"/>
 </RelativeLayout>
