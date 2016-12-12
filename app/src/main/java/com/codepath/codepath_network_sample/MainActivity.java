@@ -24,7 +24,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
+        StrictMode.setThreadPolicy(
+                new StrictMode.ThreadPolicy.Builder().
+                        permitNetwork().build()
+        );
 
         ivSample = (ImageView) findViewById(R.id.ivSample);
         btnAction = (Button) findViewById(R.id.btnAction);
