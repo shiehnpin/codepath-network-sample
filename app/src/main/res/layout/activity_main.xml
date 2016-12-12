@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -11,8 +12,19 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.codepath.codepath_network_sample.MainActivity">
 
-    <TextView
+    <ImageView
+        android:layout_height="200dp"
+        app:srcCompat="@android:color/darker_gray"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/ivSample"
+        android:layout_width="300dp"/>
+
+    <Button
+        android:text="Get"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"/>
+        android:layout_above="@+id/ivSample"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/btnAction"/>
 </RelativeLayout>
