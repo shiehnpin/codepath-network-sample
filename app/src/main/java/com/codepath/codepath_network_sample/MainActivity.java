@@ -1,5 +1,7 @@
 package com.codepath.codepath_network_sample;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,26 +51,75 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private class GetJSONObjectAsyncTask extends AsyncTask<String,Void,JSONObject>{
+    private class GetJSONObjectAsyncTask extends AsyncTask<String,Integer,JSONObject>{
 
         private final int id = IDX++;
+        private ProgressDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            //create a progress dialog
+            dialog = new ProgressDialog(MainActivity.this);
+            dialog.setTitle("Proceeding");
+
+            //Allow user to cancel by touch outside the dialog
+            dialog.setCanceledOnTouchOutside(true);
+
+            //Call cancel method to cancel this task.
+            dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    cancel(true);
+                }
+            });
+            dialog.setMessage("0%");
+            dialog.show();
+
+        }
 
         @Override
         protected JSONObject doInBackground(String... params) {
             Log.d("AsyncTask","JsonTask#"+id+" - doInBackground "+Thread.currentThread().getName());
             String url = params[0];
 
+            for(int i=1;i<=100;i+=10) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //Update the progress; This will invoke onProgressUpdate method on Ui thread.
+                publishProgress(i);
+            }
+
             return getJsonFromAPI(url);
         }
 
         @Override
+        protected void onProgressUpdate(Integer... values) {
+
+            //Refresht while progress is updated.
+            dialog.setMessage(values[0]+"%...");
+        }
+
+        @Override
         protected void onPostExecute(JSONObject jsonObject) {
+
+            //Dismiss the dialog.
+            dialog.dismiss();
             Log.d("AsyncTask","JsonTask#"+id+" - onPostExecute "+Thread.currentThread().getName());
             try {
                 txIp.setText(jsonObject.getString("origin"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+
+        @Override
+        protected void onCancelled() {
+            //Dismiss the dialog and show toast to notify user the task has been canceled.
+            dialog.dismiss();
+            Toast.makeText(MainActivity.this,"Cancel",Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -98,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(v.getId() == R.id.btnGetImage) {
             new GetBitmapAsyncTask().execute("http://httpbin.org/image");
         }else if(v.getId() == R.id.btnGetIp) {
-            new GetJSONObjectAsyncTask().execute("http://httpbin.org/delay/10");
+            new GetJSONObjectAsyncTask().execute("http://httpbin.org/get");
         }
 
     }
