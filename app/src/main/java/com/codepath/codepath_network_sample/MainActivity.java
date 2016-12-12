@@ -66,13 +66,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private class GetBitmapAsyncTask extends AsyncTask<String,Void,Bitmap>{
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            String url = params[0];
+
+            return getImageFromAPI(url);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            ivSample.setImageBitmap(bitmap);
+        }
+    }
+
 
 
     @Override
     public void onClick(View v) {
 
         if(v.getId() == R.id.btnGetImage) {
-            getImageFromAPI();
+            new GetBitmapAsyncTask().execute("http://httpbin.org/image");
         }else if(v.getId() == R.id.btnGetIp) {
             new GetJSONObjectAsyncTask().execute("http://httpbin.org/delay/10");
         }
@@ -141,14 +156,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     //Image url: http://httpbin.org/image
-    private void getImageFromAPI()  {
+    private Bitmap getImageFromAPI(String url)  {
 
         //The links that we can fetch image.
         URL targetUrl = null;
         HttpURLConnection conn = null;
         InputStream in = null;
+        Bitmap bmp = null;
         try {
-            targetUrl = new URL("http://httpbin.org/image");
+            targetUrl = new URL(url);
 
             //1. Step 1, open an connection linked to the specific url.
             conn = (HttpURLConnection) targetUrl.openConnection();
@@ -157,8 +173,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             in = conn.getInputStream();
 
             //3. Step 3,Get the data and display it.
-            Bitmap bmp = BitmapFactory.decodeStream(in);
-            ivSample.setImageBitmap(bmp);
+            bmp = BitmapFactory.decodeStream(in);
+
 
 
         } catch (IOException e) {
@@ -179,6 +195,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
         }
+
+        return bmp;
 
     }
 }
