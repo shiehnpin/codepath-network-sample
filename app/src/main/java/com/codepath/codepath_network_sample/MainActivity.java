@@ -35,10 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        StrictMode.setThreadPolicy(
-                new StrictMode.ThreadPolicy.Builder().
-                        permitNetwork().build()
-        );
+
 
         ivSample = (ImageView) findViewById(R.id.ivSample);
         txIp = (TextView) findViewById(R.id.txIP);
@@ -50,6 +47,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private class GetJSONObjectAsyncTask extends AsyncTask<String,Void,JSONObject>{
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            String url = params[0];
+
+            return getJsonFromAPI(url);
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject jsonObject) {
+            try {
+                txIp.setText(jsonObject.getString("origin"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
 
     @Override
@@ -58,11 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(v.getId() == R.id.btnGetImage) {
             getImageFromAPI();
         }else if(v.getId() == R.id.btnGetIp) {
-            try {
-                txIp.setText(getJsonFromAPI("http://httpbin.org/delay/10").getString("origin"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            new GetJSONObjectAsyncTask().execute("http://httpbin.org/delay/10");
         }
 
     }
