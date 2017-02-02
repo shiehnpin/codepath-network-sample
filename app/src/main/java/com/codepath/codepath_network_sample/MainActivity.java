@@ -28,53 +28,39 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 
 import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static int IDX = 0;
-    private TextView txIp;
     private ImageView ivSample;
     private Button btnGetImage;
-    private Button btnGetJson;
+    private static final String IMG_URL =
+            "http://wallpaperswide.com/download/beautiful_space_view-wallpaper-2560x1600.jpg";
+
+    private void disableNetworkOnUiThreadRestrict() {
+        StrictMode.ThreadPolicy threadPolicy =
+                new StrictMode.ThreadPolicy.Builder().permitNetwork().build();
+        StrictMode.setThreadPolicy(threadPolicy);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
         ivSample = (ImageView) findViewById(R.id.ivSample);
-        txIp = (TextView) findViewById(R.id.txIP);
         btnGetImage = (Button) findViewById(R.id.btnGetImage);
-        btnGetJson = (Button) findViewById(R.id.btnGetIp);
         btnGetImage.setOnClickListener(this);
-        btnGetJson.setOnClickListener(this);
-
 
     }
 
     @Override
     public void onClick(View v) {
 
-        if(v.getId() == R.id.btnGetImage) {
-            Picasso.with(MainActivity.this).load("http://httpbin.org/image").into(ivSample);
-        }else if(v.getId() == R.id.btnGetIp) {
-            AsyncHttpClient client = new AsyncHttpClient();
-            client.get("http://httpbin.org/get",new JsonHttpResponseHandler(){
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    try {
-                        txIp.setText(response.getString("origin"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
-
     }
+
 }

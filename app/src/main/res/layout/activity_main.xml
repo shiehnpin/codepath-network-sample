@@ -12,14 +12,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.codepath.codepath_network_sample.MainActivity">
 
-    <ImageView
-        android:layout_height="200dp"
-        app:srcCompat="@android:color/darker_gray"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/ivSample"
-        android:layout_width="300dp"/>
-
     <Button
         android:text="Get Image"
         android:layout_width="wrap_content"
@@ -28,19 +20,19 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/btnGetImage"/>
 
-    <Button
-        android:text="Get IP"
+    <ProgressBar
+        style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ivSample"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/btnGetIp"/>
+        android:id="@+id/progressBar"/>
 
-    <TextView
-        android:text="0.0.0.0"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/txIP"
-        android:layout_below="@+id/btnGetIp"
-        android:layout_centerHorizontal="true"/>
+    <ImageView
+        android:layout_height="200dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/ivSample"
+        android:layout_width="300dp"/>
+
 </RelativeLayout>
