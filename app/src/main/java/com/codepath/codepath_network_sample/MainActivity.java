@@ -34,7 +34,7 @@ import java.net.URLConnection;
 
 import cz.msebera.android.httpclient.Header;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
     private ImageView ivSample;
     private Button btnGetImage;
@@ -54,12 +54,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         ivSample = (ImageView) findViewById(R.id.ivSample);
         btnGetImage = (Button) findViewById(R.id.btnGetImage);
-        btnGetImage.setOnClickListener(this);
-
-    }
-
-    @Override
-    public void onClick(View v) {
+        btnGetImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Todo
+            }
+        });
 
     }
 
